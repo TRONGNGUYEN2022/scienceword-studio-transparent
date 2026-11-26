@@ -1,0 +1,1 @@
+# scienceword-studio-transparent
