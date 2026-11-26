@@ -1,0 +1,16 @@
+<Window x:Class="ScienceWordWebViewOverlay.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        Title="ScienceWord WebView2 Transparent Overlay"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        WindowState="Maximized">
+    <Grid Background="Transparent">
+        <wv2:WebView2 x:Name="WebCanvas" DefaultBackgroundColor="Transparent" />
+    </Grid>
+</Window>
