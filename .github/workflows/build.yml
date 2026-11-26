@@ -34,7 +34,7 @@ jobs:
 
       - name: Copy HTML Asset beside Portable EXE
         run: |
-          mkdir -p publish_portable/Assets
+          New-Item -ItemType Directory -Force -Path publish_portable/Assets | Out-Null
           cp Assets/ScienceWordStudio.html publish_portable/Assets/ScienceWordStudio.html
 
       - name: Publish Lite Single-File EXE (Sieu nhe, can .NET 8 Runtime)
@@ -48,7 +48,7 @@ jobs:
 
       - name: Copy HTML Asset beside Lite EXE
         run: |
-          mkdir -p publish_lite/Assets
+          New-Item -ItemType Directory -Force -Path publish_portable/Assets | Out-Null
           cp Assets/ScienceWordStudio.html publish_lite/Assets/ScienceWordStudio.html
 
       - name: Upload Portable Package Artifact
