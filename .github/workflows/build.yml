@@ -1,0 +1,64 @@
+name: Build ScienceWord WebView2 Overlay (C# WPF)
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore NuGet packages
+        run: dotnet restore ScienceWordWebViewOverlay.csproj
+
+      - name: Publish Portable Single-File EXE (Khong can cai .NET)
+        run: >
+          dotnet publish ScienceWordWebViewOverlay.csproj
+          -c Release
+          -r win-x64
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:EnableCompressionInSingleFile=true
+          -o publish_portable
+
+      - name: Copy HTML Asset beside Portable EXE
+        run: |
+          mkdir -p publish_portable/Assets
+          cp Assets/ScienceWordStudio.html publish_portable/Assets/ScienceWordStudio.html
+
+      - name: Publish Lite Single-File EXE (Sieu nhe, can .NET 8 Runtime)
+        run: >
+          dotnet publish ScienceWordWebViewOverlay.csproj
+          -c Release
+          -r win-x64
+          --self-contained false
+          -p:PublishSingleFile=true
+          -o publish_lite
+
+      - name: Copy HTML Asset beside Lite EXE
+        run: |
+          mkdir -p publish_lite/Assets
+          cp Assets/ScienceWordStudio.html publish_lite/Assets/ScienceWordStudio.html
+
+      - name: Upload Portable Package Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ScienceWord_WebView2_Overlay_Portable_win-x64
+          path: publish_portable/
+
+      - name: Upload Lite Package Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ScienceWord_WebView2_Overlay_Lite_win-x64
+          path: publish_lite/
